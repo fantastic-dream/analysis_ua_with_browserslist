@@ -1,6 +1,6 @@
 {
   "name": "analysis_ua_with_browserslist",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Analyze adaptability according to browserlist config",
   "main": "index.js",
   "bin": {
