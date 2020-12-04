@@ -46,7 +46,7 @@ async function analysis(opts) {
   const renderMessageData = plugins.map(
     async (plugin) =>
       await plugin.process(extractUseragentData, {
-        root: process.env(),
+        root: process.cwd(),
       })
   );
 
