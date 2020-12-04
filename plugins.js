@@ -14,9 +14,8 @@ const renderPlugins = [
       const config = browsersListConfig.defaults;
       let success = 0;
       let error = 0;
-
       data.forEach((dataItem) => {
-        if (matchesUA(dataItem, config)) {
+        if (matchesUA(dataItem, { browsers: config })) {
           success++;
         } else {
           error++;
