@@ -34,10 +34,5 @@
     "os-locale": "^5.0.0",
     "prettier": "^2.2.1",
     "update-notifier": "^5.0.1"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 10"
-  ]
+  }
 }
