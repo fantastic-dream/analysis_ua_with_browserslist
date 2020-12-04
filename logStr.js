@@ -14,7 +14,8 @@ module.exports =
           matchSuccess: 'UA Match Success Count: ',
           matchErrorCount: 'UA Match Error Count: ',
           matchSuccessRate: 'UA Match Success Rate: ',
-          failAnalysisLoadFile: 'unknown config file !!!',
+          failAnalysisLoadFile:
+            'Can not parse any browserslist config file !!!',
         },
         plugin2: {
           resultTitle: 'The main Platform distribution:',
@@ -36,7 +37,7 @@ module.exports =
           matchSuccess: 'UA 适配成功总数：',
           matchErrorCount: 'UA 适配错误总数：',
           matchSuccessRate: 'UA 匹配成功占比：',
-          failAnalysisLoadFile: '未能成功解析配置文件 ！！！',
+          failAnalysisLoadFile: '未能成功解析 browserslist 配置文件 ！！！',
         },
         plugin2: {
           resultTitle: '主要设备平台分布：',
