@@ -1,0 +1,43 @@
+{
+  "name": "analysis_ua_with_browserslist",
+  "version": "0.0.1",
+  "description": "Analyze adaptability according to browserlist config",
+  "main": "index.js",
+  "bin": {
+    "analysis_browserlist": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 -t v"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "@grfe/auto-publish": "^1.0.2",
+    "browserslist": "^4.15.0",
+    "browserslist-useragent": "^3.0.3",
+    "browserslist-useragent-regexp": "^2.1.1",
+    "chalk": "^4.1.0",
+    "commander": "^6.2.0",
+    "conventional-changelog-cli": "^2.0.31",
+    "csvtojson": "^2.0.10",
+    "eslint": "^7.14.0",
+    "husky": "^4.3.0",
+    "lodash": "^4.17.20",
+    "os-locale": "^5.0.0",
+    "prettier": "^2.2.1",
+    "update-notifier": "^5.0.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ]
+}
