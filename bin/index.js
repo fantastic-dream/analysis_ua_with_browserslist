@@ -13,13 +13,16 @@ update({
   pkg,
 }).notify();
 
-process.on('uncaughtException', (e) => {
-  print('\nerror: \n');
+function uncaughtHandler(e) {
+  printError('\nerror: \n');
   printError(`message: ${e.message}\n`);
   printError(`stack:
 ${e && e.stack}`);
   process.exit(1);
-});
+}
+process.on('uncaughtException', uncaughtHandler);
+
+process.on('unhandledRejection', uncaughtHandler);
 
 // version
 commander.version(pkg.version);
