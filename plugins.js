@@ -5,8 +5,15 @@ const { plugin1, plugin2 } = require('./logStr');
 
 const renderPlugins = [
   {
-    process: async (data, { root }) => {
-      const browsersListConfig = browserslist.findConfig(root);
+    process: async (data, { rootPath }) => {
+      const {
+        count,
+        matchSuccess,
+        matchErrorCount,
+        matchSuccessRate,
+        resultTitle,
+      } = plugin1;
+      const browsersListConfig = browserslist.findConfig(rootPath);
       if (!browsersListConfig || !browsersListConfig.defaults) {
         throw new Error(plugin1.failAnalysisLoadFile);
       }
@@ -14,49 +21,51 @@ const renderPlugins = [
       const config = browsersListConfig.defaults;
       let success = 0;
       let error = 0;
-      data.forEach((dataItem) => {
-        if (matchesUA(dataItem, { browsers: config })) {
-          success++;
-        } else {
-          error++;
-        }
-      });
+      data.forEach((dataItem) =>
+        matchesUA(dataItem, { browsers: config }) ? success++ : error++
+      );
 
       return {
-        title: plugin1.resultTitle,
+        title: resultTitle,
         content: `
-${plugin1.count}${success + error}
-${plugin1.matchSuccess}${success}
-${plugin1.matchErrorCount}${error}
-${plugin1.matchSuccessRate}${(success / (success + error)) * 100}%`,
+${count}${success + error}
+${matchSuccess}${success}
+${matchErrorCount}${error}
+${matchSuccessRate}${(success / (success + error)) * 100}%`,
       };
     },
   },
 
   {
     process: async (data) => {
-      const len = data.length;
+      const {
+        iosDevice,
+        androidDevice,
+        unknownDevice,
+        unknownDeviceExample,
+        resultTitle,
+      } = plugin2;
       let IOS = 0;
       let Android = 0;
       let unknown = 0;
       let example = '';
-      for (let i = 0; i < len; i++) {
-        if (/(iphone|ipod|ipad)/gi.test(data[i])) {
+      for (let deviceMessage of data) {
+        if (/(iphone|ipod|ipad)/gi.test(deviceMessage)) {
           IOS++;
-        } else if (/(Android).*([\d.]+)/gi.test(data[i])) {
+        } else if (/(Android).*([\d.]+)/gi.test(deviceMessage)) {
           Android++;
         } else {
           unknown++;
-          example = data[i];
+          example = deviceMessage;
         }
       }
       return {
-        title: `${plugin2.resultTitle}`,
+        title: `${resultTitle}`,
         content: `
-${plugin2.iosDevice}${IOS},
-${plugin2.androidDevice}${Android},
-${plugin2.unknownDevice}${unknown},
-${plugin2.unknownDeviceExample}${example}
+${iosDevice}${IOS},
+${androidDevice}${Android},
+${unknownDevice}${unknown},
+${unknownDeviceExample}${example}
 				`,
       };
     },

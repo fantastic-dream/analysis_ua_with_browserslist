@@ -1,7 +1,8 @@
-const csvtojson = require('csvtojson');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const get = require('lodash/get');
+const csvtojson = require('csvtojson');
+
 const plugins = require('./plugins');
 const { print, printSuccess, successText } = require('./logger');
 const {
@@ -14,20 +15,46 @@ const {
 const defaultOpts = {
   file: `analysis.csv`,
   key: `useragent`,
+  rootPath: process.cwd(),
 };
 
 module.exports = analysis;
 
-async function analysis(opts) {
+async function analysis(userOptions) {
   print(startAnalysis);
-  const Options = {
-    ...defaultOpts,
-    ...opts,
-  };
-  const { key, file } = Options;
-  const fileExtName = path.extname(file);
-  const filePath = path.resolve(process.cwd(), file);
 
+  const opts = {
+    ...defaultOpts,
+    ...userOptions,
+  };
+
+  const { key, file } = opts;
+  const fileExtName = path.extname(file);
+  const fileData = await getAnalysisFileData(fileExtName, opts);
+  const extractUseragentData = fileData
+    .map((c) => get(c, key, ''))
+    .filter(Boolean);
+
+  const renderMessageData = plugins.map(
+    async (plugin) => await plugin.process(extractUseragentData, opts)
+  );
+
+  const messages = await Promise.all(renderMessageData);
+  messages.map(generatorLogger);
+  printSuccess(analysisEndTip);
+}
+
+function generatorLogger(message) {
+  const { title, content } = message;
+  console.log();
+  console.log(successText(`${localeTitle}: ${title}`));
+  console.log(successText(content));
+  console.log();
+}
+
+async function getAnalysisFileData(fileExtName, opts) {
+  const { rootPath, file } = opts;
+  const filePath = path.resolve(rootPath, file);
   let fileData = null;
   if (fileExtName === '.json') {
     fileData = JSON.parse(fs.readFileSync(filePath));
@@ -38,26 +65,5 @@ async function analysis(opts) {
   } else {
     throw new Error(analysisFileExtError);
   }
-
-  const extractUseragentData = fileData
-    .map((c) => get(c, key, ''))
-    .filter(Boolean);
-
-  const renderMessageData = plugins.map(
-    async (plugin) =>
-      await plugin.process(extractUseragentData, {
-        root: process.cwd(),
-      })
-  );
-
-  const messages = await Promise.all(renderMessageData);
-  messages.map((message) => {
-    const { title, content } = message;
-    console.log();
-    console.log(successText(`${localeTitle}: ${title}`));
-    console.log(successText(content));
-    console.log();
-  });
-
-  printSuccess(analysisEndTip);
+  return fileData;
 }

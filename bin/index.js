@@ -31,7 +31,8 @@ commander.version(pkg.version);
 commander
   .command('analysis')
   .option('-f, --file <filename>', 'select a file path or file name')
-  .option('-k, --key <selectKeyPath>', 'set useragent select key path')
+  .option('-k, --key <key>', 'set useragent select key path')
+  .option('-r, --root <rootPath>', 'set root Path find your analysis file')
   .action(main);
 
 commander.option('-h, --help').action(() => print(helperText));
