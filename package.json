@@ -15,7 +15,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "author": "",
+  "author": "ZWkang",
   "license": "MIT",
   "dependencies": {
     "@commitlint/cli": "^8.3.5",
